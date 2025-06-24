@@ -1,0 +1,255 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+body {
+  font-family: "Inter", sans-serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 20 14.3% 4.1%;
+    --card: 0 0% 100%;
+    --card-foreground: 20 14.3% 4.1%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 20 14.3% 4.1%;
+    --primary: 24 9.8% 10%;
+    --primary-foreground: 60 9.1% 97.8%;
+    --secondary: 60 4.8% 95.9%;
+    --secondary-foreground: 24 9.8% 10%;
+    --muted: 60 4.8% 95.9%;
+    --muted-foreground: 25 5.3% 44.7%;
+    --accent: 60 4.8% 95.9%;
+    --accent-foreground: 24 9.8% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 60 9.1% 97.8%;
+    --border: 20 5.9% 90%;
+    --input: 20 5.9% 90%;
+    --ring: 20 14.3% 4.1%;
+    --chart-1: 12 76% 61%;
+    --chart-2: 173 58% 39%;
+    --chart-3: 197 37% 24%;
+    --chart-4: 43 74% 66%;
+    --chart-5: 27 87% 67%;
+    --radius: 0.5rem;
+  }
+  .dark {
+    --background: 20 14.3% 4.1%;
+    --foreground: 60 9.1% 97.8%;
+    --card: 20 14.3% 4.1%;
+    --card-foreground: 60 9.1% 97.8%;
+    --popover: 20 14.3% 4.1%;
+    --popover-foreground: 60 9.1% 97.8%;
+    --primary: 60 9.1% 97.8%;
+    --primary-foreground: 24 9.8% 10%;
+    --secondary: 12 6.5% 15.1%;
+    --secondary-foreground: 60 9.1% 97.8%;
+    --muted: 12 6.5% 15.1%;
+    --muted-foreground: 24 5.4% 63.9%;
+    --accent: 12 6.5% 15.1%;
+    --accent-foreground: 60 9.1% 97.8%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 60 9.1% 97.8%;
+    --border: 12 6.5% 15.1%;
+    --input: 12 6.5% 15.1%;
+    --ring: 24 5.7% 82.9%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  h1 {
+    @apply text-3xl sm:text-4xl lg:text-[40px] lg:leading-normal font-semibold text-gray-500;
+  }
+
+  h2 {
+    @apply text-2xl font-bold text-gray-500 mb-5;
+  }
+
+  h3 {
+    @apply text-[18px] font-bold text-gray-500 mb-5;
+  }
+
+  h4 {
+    @apply text-[17px] font-bold text-gray-500 mb-0;
+  }
+
+  h5 {
+    @apply text-[15px] font-bold text-gray-500 mb-0;
+  }
+
+  p {
+    @apply text-darkBlueGray;
+  }
+
+  nav ul li a {
+    @apply font-light;
+  }
+}
+
+.calendar-bordered {
+  .text-primaryColors-default {
+    border: 1px solid #4989c5 !important;
+    svg {
+      color: #4989c5 !important;
+    }
+  }
+}
+
+.toast-notification {
+  position: relative;
+  z-index: 9999;
+  pointer-events: auto;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+.fc-toolbar-chunk .fc-today-button {
+  display: none !important;
+}
+.fc-button-group .fc-prev-button,
+.fc-button-group .fc-next-button {
+  background-color: #253baa !important;
+  border-color: #253baa !important;
+}
+
+// Availability Calendar Styles
+.availability-event {
+  border-radius: 6px !important;
+  margin: 2px 0 !important;
+  font-weight: 500 !important;
+  font-size: 0.75rem !important;
+
+  &.morning-shift {
+    background-color: #f6b53b !important;
+    border-color: #f6b53b !important;
+  }
+
+  &.night-shift {
+    background-color: #8b5cf6 !important;
+    border-color: #7c3aed !important;
+  }
+}
+
+.fc-daygrid-day {
+  &.fc-day-today {
+    background-color: #fef3c7 !important;
+  }
+}
+
+.fc-daygrid-day-frame {
+  min-height: 80px !important;
+}
+
+.fc-daygrid-day-events {
+  margin-top: 4px !important;
+}
+
+.fc-daygrid-event-dot {
+  display: none !important;
+}
+
+.fc-event {
+  cursor: default !important;
+  border: none !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1) !important;
+}
+
+.fc-toolbar-title {
+  font-size: 1.25rem !important;
+  font-weight: 600 !important;
+  color: #374151 !important;
+}
+
+.fc-button {
+  font-weight: 500 !important;
+  border-radius: 6px !important;
+  padding: 6px 12px !important;
+
+  &:focus {
+    box-shadow: 0 0 0 2px rgba(37, 59, 170, 0.2) !important;
+  }
+}
+
+.fc-daygrid-day-number {
+  font-weight: 500 !important;
+  color: #374151 !important;
+}
+
+.fc-col-header-cell {
+  background-color: #f9fafb !important;
+  border-bottom: 2px solid #e5e7eb !important;
+
+  .fc-col-header-cell-cushion {
+    font-weight: 600 !important;
+    color: #374151 !important;
+    text-transform: uppercase !important;
+    font-size: 0.75rem !important;
+    letter-spacing: 0.05em !important;
+  }
+}
+
+// Weekly view styles
+.fc-timegrid {
+  .fc-timegrid-slot {
+    height: 40px !important;
+  }
+
+  .fc-timegrid-slot-label {
+    font-size: 0.75rem !important;
+    color: #6b7280 !important;
+  }
+
+  .fc-timegrid-event {
+    border-radius: 4px !important;
+    margin: 1px 2px !important;
+    font-size: 0.7rem !important;
+    font-weight: 500 !important;
+  }
+
+  .fc-timegrid-col-events {
+    margin: 0 !important;
+  }
+}
+
+// Event tooltips
+.fc-event:hover {
+  opacity: 0.9 !important;
+  transform: translateY(-1px) !important;
+  transition: all 0.2s ease !important;
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .fc-toolbar {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+
+  .fc-toolbar-chunk {
+    display: flex !important;
+    justify-content: center !important;
+  }
+
+  .fc-daygrid-day-frame {
+    min-height: 60px !important;
+  }
+}

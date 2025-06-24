@@ -1,0 +1,116 @@
+import React from "react";
+import {
+  NavigationMenu,
+  NavigationMenuItem,
+  NavigationMenuList
+} from "@/components/ui/navigation-menu";
+import Link from "next/link";
+import { Dot, Calendar, TrendingUp, BarChart3 } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { useStaffFormStore } from "@/stores/staffFormStore";
+
+const StaffDetailSideBar = () => {
+  const pathname = usePathname();
+  const { steps, currentStep, setCurrentStep, formMode } = useStaffFormStore();
+
+  const handleStepClick = (stepIndex: number, step: any) => {
+    if (step.isEnabled) {
+      setCurrentStep(stepIndex);
+    }
+  };
+
+  // Additional components that only show in view mode
+  const viewModeComponents = [
+    {
+      id: "calendar",
+      path: "/dashboard/admin/team/staff-detail/calendar",
+      label: "Calendar",
+      icon: Calendar
+    },
+    {
+      id: "continuity",
+      path: "/dashboard/admin/team/staff-detail/continuity",
+      label: "Continuity",
+      icon: TrendingUp
+    },
+    {
+      id: "performance",
+      path: "/dashboard/admin/team/staff-detail/performance",
+      label: "Performance",
+      icon: BarChart3
+    }
+  ];
+
+  return (
+    <div className="bg-white w-full h-auto p-4 rounded-2xl shadow">
+      <NavigationMenu className="w-full max-w-full">
+        <NavigationMenuList className="w-full flex flex-col justify-start items-start text-sm text-[#41526A]">
+          {/* Regular form steps */}
+          {steps.map((step, index) => (
+            <NavigationMenuItem key={step.id} className="w-full group !ml-0">
+              <Link
+                href={step.path}
+                className={`w-full flex flex-row justify-start items-center gap-0
+                  ${
+                    pathname === step.path
+                      ? "bg-cyan text-white"
+                      : "group-hover:text-white group-hover:bg-cyan group-hover:font-bold group-hover:text-sm"
+                  }
+                  ${!step.isEnabled ? "opacity-50 cursor-not-allowed" : ""}
+                `}
+                onClick={(e) => {
+                  if (!step.isEnabled) {
+                    e.preventDefault();
+                  } else {
+                    handleStepClick(index, step);
+                  }
+                }}
+              >
+                <div className="p-5 bg-transparent group-hover:bg-cyan">
+                  <Dot size={32} />
+                </div>
+                <span className="px-2 py-5 font-medium">{step.label}</span>
+              </Link>
+            </NavigationMenuItem>
+          ))}
+
+          {/* View mode only components */}
+          {formMode === "view" && (
+            <>
+              <div className="w-full border-t border-gray-200 my-2"></div>
+              {viewModeComponents.map((component) => {
+                const IconComponent = component.icon;
+                return (
+                  <NavigationMenuItem
+                    key={component.id}
+                    className="w-full group !ml-0"
+                  >
+                    <Link
+                      href={component.path}
+                      className={`w-full flex flex-row justify-start items-center gap-0
+                        ${
+                          pathname === component.path
+                            ? "bg-cyan text-white"
+                            : "group-hover:text-white group-hover:bg-cyan group-hover:font-bold group-hover:text-sm"
+                        }
+                      `}
+                    >
+                      <div className="p-5 bg-transparent group-hover:bg-cyan">
+                        <Dot size={32} />
+                      </div>
+                      <span className="px-2 py-5 font-medium">
+                        {component.label}
+                      </span>
+                    </Link>
+                  </NavigationMenuItem>
+                );
+              })}
+            </>
+          )}
+        </NavigationMenuList>
+      </NavigationMenu>
+    </div>
+  );
+};
+
+export default StaffDetailSideBar;
