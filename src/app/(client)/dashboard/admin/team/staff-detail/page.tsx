@@ -1,5 +1,6 @@
 "use client";
-
+// ADD THIS LINE:
+export const dynamic = 'force-dynamic';
 import { useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import StaffDetailsForm from "@/components/Admin-dashboard/Team/StaffDetailsForm/staffDetails";

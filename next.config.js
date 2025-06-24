@@ -5,7 +5,7 @@ const nextConfig = {
   swcMinify: true,
   pageExtensions: ["ts", "tsx"],
 
-  // 🚨 THESE TWO LINES FIX THE LINTING ERROR:
+  // Keep the linting disabled
   eslint: {
     ignoreDuringBuilds: true
   },
@@ -13,9 +13,9 @@ const nextConfig = {
     ignoreBuildErrors: true
   },
 
-  // Performance optimizations
+  // REMOVE the experimental optimizeCss that's causing the critters error
   experimental: {
-    optimizeCss: true,
+    // optimizeCss: true,  // <-- REMOVED THIS LINE
     optimizePackageImports: ["@radix-ui/react-icons", "lucide-react"]
   },
 

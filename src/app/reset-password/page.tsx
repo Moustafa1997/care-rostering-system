@@ -1,5 +1,6 @@
 "use client";
-
+// ADD THIS LINE:
+export const dynamic = 'force-dynamic';
 import { useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
