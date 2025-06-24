@@ -1,7 +1,6 @@
 "use client";
-// ADD THIS LINE:
-export const dynamic = 'force-dynamic';
-import { useState } from "react";
+
+import { useState, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -11,7 +10,8 @@ import { useResetPassword } from "@/hooks/auth/useResetPassword";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
 
-export default function ResetPasswordPage() {
+// Component that uses useSearchParams
+function ResetPasswordContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const token = searchParams?.get("token") || "";
@@ -26,8 +26,8 @@ export default function ResetPasswordPage() {
     confirmPassword?: string;
   }>({});
 
-  const { resetPassword, loading, error, data } = useResetPassword(apiRole);
-  const { success, error: showError } = useToast();
+  const { resetPassword, loading, error } = useResetPassword(apiRole);
+  const { success } = useToast();
 
   if (!token) {
     return (
@@ -127,7 +127,6 @@ export default function ResetPasswordPage() {
         router.push("/login");
       }
     } catch (err) {
-      // Error is handled by the hook and will be displayed
       console.error("Reset password error:", err);
     }
   };
@@ -231,5 +230,25 @@ export default function ResetPasswordPage() {
         </form>
       </div>
     </div>
+  );
+}
+
+// Loading component
+function LoadingFallback() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="max-w-md w-full p-8 bg-white rounded-lg shadow-lg">
+        <div className="text-center">Loading...</div>
+      </div>
+    </div>
+  );
+}
+
+// Main component with Suspense boundary
+export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={<LoadingFallback />}>
+      <ResetPasswordContent />
+    </Suspense>
   );
 }

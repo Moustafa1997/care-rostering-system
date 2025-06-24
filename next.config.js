@@ -5,7 +5,7 @@ const nextConfig = {
   swcMinify: true,
   pageExtensions: ["ts", "tsx"],
 
-  // Keep the linting disabled
+  // Disable linting and TypeScript errors
   eslint: {
     ignoreDuringBuilds: true
   },
@@ -13,16 +13,13 @@ const nextConfig = {
     ignoreBuildErrors: true
   },
 
-  // REMOVE the experimental optimizeCss that's causing the critters error
+  // Remove problematic experimental features
   experimental: {
-    // optimizeCss: true,  // <-- REMOVED THIS LINE
     optimizePackageImports: ["@radix-ui/react-icons", "lucide-react"]
   },
 
-  // Enable compression
   compress: true,
 
-  // Optimize images
   images: {
     domains: [
       "dev82.developer24x7.com",
@@ -34,11 +31,9 @@ const nextConfig = {
     formats: ["image/webp", "image/avif"]
   },
 
-  // Enable static optimization where possible
   trailingSlash: false,
   poweredByHeader: false,
 
-  // Simple redirect
   async redirects() {
     return [
       {
