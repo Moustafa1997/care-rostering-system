@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import StaffDetailsForm from "@/components/Admin-dashboard/Team/StaffDetailsForm/staffDetails";
 import { useStaffFormStore } from "@/stores/staffFormStore";
 import { useStaffDetails } from "@/hooks/staff/useStaffDetails";
 
-export default function BasicProfilePage() {
+// Component that uses useSearchParams
+function StaffDetailContent() {
   const searchParams = useSearchParams();
   const mode = searchParams.get("mode");
   const staffId = searchParams.get("staffId");
@@ -33,4 +34,22 @@ export default function BasicProfilePage() {
   }
 
   return <StaffDetailsForm />;
+}
+
+// Loading component
+function StaffDetailLoading() {
+  return (
+    <div className="flex items-center justify-center h-64">
+      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary"></div>
+    </div>
+  );
+}
+
+// Main component with Suspense boundary
+export default function BasicProfilePage() {
+  return (
+    <Suspense fallback={<StaffDetailLoading />}>
+      <StaffDetailContent />
+    </Suspense>
+  );
 }
