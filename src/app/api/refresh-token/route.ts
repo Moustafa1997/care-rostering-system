@@ -3,11 +3,8 @@ import { cookies } from "next/headers";
 
 export async function POST() {
   try {
-    console.log("=== Starting refresh token process ===");
-
     const cookieStore = cookies();
     const refreshToken = cookieStore.get("refreshToken")?.value;
-    console.log("refresh token:", refreshToken);
 
     if (!refreshToken) {
       return NextResponse.json(
@@ -33,7 +30,6 @@ export async function POST() {
       });
 
       const data = await apiResponse.json();
-      console.log("Response data:", data);
 
       if (!apiResponse.ok) {
         // If the refresh token is invalid, clear it from cookies
@@ -81,15 +77,11 @@ export async function POST() {
         maxAge: 30 * 24 * 60 * 60 // 30 days in seconds
       });
 
-      console.log("=== Refresh token process completed successfully ===");
       return nextResponse;
     } catch (fetchError) {
-      console.error("Fetch error:", fetchError);
       throw fetchError;
     }
   } catch (error) {
-    console.error("=== Error in refresh token process ===");
-    console.error("Error details:", error);
     return NextResponse.json(
       { error: "Failed to refresh tokens" },
       { status: 500 }

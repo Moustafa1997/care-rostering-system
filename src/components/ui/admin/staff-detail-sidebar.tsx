@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -6,16 +6,40 @@ import {
 } from "@/components/ui/navigation-menu";
 import Link from "next/link";
 import { Dot, Calendar, TrendingUp, BarChart3 } from "lucide-react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useStaffFormStore } from "@/stores/staffFormStore";
 
 const StaffDetailSideBar = () => {
+  console.time("StaffDetailSideBar component render");
+
+  // Track rerenders
+  const renderCount = useRef(0);
+  renderCount.current += 1;
+
+  useEffect(() => {
+    console.log(
+      `🔄 StaffDetailSideBar rerendered ${renderCount.current} times`
+    );
+  });
+
   const pathname = usePathname();
+  const router = useRouter();
+
   const { steps, currentStep, setCurrentStep, formMode } = useStaffFormStore();
 
   const handleStepClick = (stepIndex: number, step: any) => {
     if (step.isEnabled) {
+      console.time("Total step click time");
+
+      console.time("setCurrentStep");
       setCurrentStep(stepIndex);
+      console.timeEnd("setCurrentStep");
+
+      console.time("router.push");
+      router.push(steps[stepIndex].path);
+      console.timeEnd("router.push");
+
+      console.timeEnd("Total step click time");
     }
   };
 
@@ -41,6 +65,8 @@ const StaffDetailSideBar = () => {
     }
   ];
 
+  console.timeEnd("StaffDetailSideBar component render");
+
   return (
     <div className="bg-white w-full h-auto p-4 rounded-2xl shadow">
       <NavigationMenu className="w-full max-w-full">
@@ -59,10 +85,15 @@ const StaffDetailSideBar = () => {
                   ${!step.isEnabled ? "opacity-50 cursor-not-allowed" : ""}
                 `}
                 onClick={(e) => {
+                  console.time("Link click handler");
                   if (!step.isEnabled) {
                     e.preventDefault();
+                    console.timeEnd("Link click handler");
                   } else {
+                    console.time("handleStepClick call");
                     handleStepClick(index, step);
+                    console.timeEnd("handleStepClick call");
+                    console.timeEnd("Link click handler");
                   }
                 }}
               >

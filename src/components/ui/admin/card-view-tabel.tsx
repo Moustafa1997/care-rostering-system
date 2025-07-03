@@ -1,19 +1,20 @@
 import React from "react";
 import { SquarePen, Trash2, Eye } from "lucide-react";
 import Link from "next/link";
-import { Staff } from "@/types/staff";
+import { StaffListView } from "@/types/staff";
+import Image from "next/image";
 
 interface CardViewProps {
-  data: Staff[];
+  data: StaffListView[];
   loading?: boolean;
-  onDelete?: (data: Staff) => void;
+  onDelete?: (data: StaffListView) => void;
 }
 
 export default function CardView({ data, loading, onDelete }: CardViewProps) {
   console.log("CardView received data:", data);
 
   // Create navigation links
-  const getStaffDetailLink = (staff: Staff, mode: "edit" | "view") => {
+  const getStaffDetailLink = (staff: StaffListView, mode: "edit" | "view") => {
     const params = new URLSearchParams({
       mode,
       staffId: staff._id
@@ -34,29 +35,41 @@ export default function CardView({ data, loading, onDelete }: CardViewProps) {
             return (
               <div
                 key={index}
-                className="bg-white p-4 rounded-xl shadow space-y-2"
+                className="bg-white p-4 rounded-xl shadow space-y-3"
               >
+                {/* Profile Image */}
+                <div className="flex justify-center">
+                  <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-gray-200">
+                    <Image
+                      src={user.photo || "/images/contractor-profile.jpeg"}
+                      alt={`${user.firstName} ${user.lastName}`}
+                      width={80}
+                      height={80}
+                      className="w-full h-full object-cover"
+                      onError={(e) => {
+                        const target = e.target as HTMLImageElement;
+                        target.src = "/images/default-avatar.png";
+                      }}
+                    />
+                  </div>
+                </div>
+
                 {/* Top Row: Name + Status + Actions */}
                 <div className="flex justify-between items-center">
                   <div className="font-semibold text-sm">
-                    {user.basicDetails?.firstName || "N/A"}{" "}
-                    {user.basicDetails?.lastName || ""}
+                    {user.firstName || "N/A"} {user.lastName || ""}
                   </div>
                   <div className="flex items-center gap-2">
                     <span
                       className={`px-2 py-1 rounded-full text-xs ${
-                        user.active
+                        user.status === "Active"
                           ? "bg-green-100 text-green-800"
-                          : user.verified
+                          : user.status === "Pending"
                             ? "bg-yellow-100 text-yellow-800"
                             : "bg-red-100 text-red-800"
                       }`}
                     >
-                      {user.active
-                        ? "Active"
-                        : user.verified
-                          ? "Pending"
-                          : "Inactive"}
+                      {user.status || "Inactive"}
                     </span>
                     <Link href={getStaffDetailLink(user, "view")}>
                       <Eye
@@ -89,7 +102,7 @@ export default function CardView({ data, loading, onDelete }: CardViewProps) {
                   <div>
                     <strong>Phone No:</strong>
                   </div>
-                  {user.basicDetails?.phoneNumber || "N/A"}
+                  {user.phone || "N/A"}
                 </div>
                 <div className="text-sm">
                   <div>

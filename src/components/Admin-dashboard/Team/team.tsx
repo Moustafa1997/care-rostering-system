@@ -20,7 +20,7 @@ import {
   SelectContent,
   SelectItem
 } from "@/components/ui/select";
-import { Staff } from "@/types/staff";
+import { Staff, StaffListView } from "@/types/staff";
 
 const Team = () => {
   const router = useRouter();
@@ -74,7 +74,7 @@ const Team = () => {
     setCurrentPage(1); // Reset to first page on filter change
   };
 
-  const handleDeleteClick = (staff: Staff) => {
+  const handleDeleteClick = (staff: StaffListView) => {
     setSelectedStaffId(staff._id);
     setIsDeleteModalOpen(true);
   };
@@ -98,10 +98,12 @@ const Team = () => {
   return (
     <div className="w-full p-4 bg-slate-50">
       <div className="w-full flex flex-row justify-between items-center">
-        <h1>Team</h1>
+        <h1 className="text-2xl font-semibold text-[#010101]">Team</h1>
         <div className="flex flex-row gap-4 items-center justify-between">
           <div className="flex gap-3 p-3 bg-[#F1F4FD] rounded-md">
-            <Button variant="outline">View all group</Button>
+            <Link href="/dashboard/admin/team/group-creation/group-list">
+              <Button variant="outline">View all group</Button>
+            </Link>
             <Link href="/dashboard/admin/team/group-creation">
               <Button variant="default">
                 Create new group <Plus />

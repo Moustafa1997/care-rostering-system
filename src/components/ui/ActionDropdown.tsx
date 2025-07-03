@@ -3,14 +3,14 @@
 import { useState, useRef, useEffect } from "react";
 import { EllipsisVertical } from "lucide-react";
 import Link from "next/link";
-import { Staff } from "@/types/staff";
+import { Staff, StaffListView } from "@/types/staff";
 
 interface ActionDropdownProps {
   // data: Staff;
   data: any;
-  onView?: (data: Staff) => void;
-  onEdit?: (data: Staff) => void;
-  onDelete?: (data: Staff) => void;
+  onView?: (data: StaffListView) => void;
+  onEdit?: (data: StaffListView) => void;
+  onDelete?: (data: StaffListView) => void;
 }
 
 const options = ["View", "Edit", "Delete"];
@@ -36,7 +36,7 @@ export default function ActionDropdown({
   };
 
   // Create navigation links
-  const getStaffDetailLink = (staff: Staff, mode: "edit" | "view") => {
+  const getStaffDetailLink = (staff: StaffListView, mode: "edit" | "view") => {
     const params = new URLSearchParams({
       mode,
       staffId: staff._id

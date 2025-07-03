@@ -51,8 +51,11 @@ export function useLogin() {
         email: data.user.email,
         role: data.user.role
       };
-      console.log(userData);
-      console.log(data.user);
+      console.log("Login successful, user data:", userData);
+      console.log(
+        "Current device token before login:",
+        useAuthStore.getState().deviceToken
+      );
 
       // Store user data and token
       setUser(userData);

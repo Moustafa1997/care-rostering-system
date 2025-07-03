@@ -6,6 +6,7 @@ import EventsTable from "@/components/ui/admin/events-tabel";
 import ImageComponent from "@/components/ImageComponent/ImageComponent";
 import { MoveRight } from "lucide-react";
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import { useDashboardSummary } from "@/hooks/admin/useDashboardSummary";
 
 export default function AdminDashboard() {
@@ -68,16 +69,16 @@ export default function AdminDashboard() {
               color="bg-[#5473E8]"
               width="w-[435px] 2xl:h-[100px] lg:h-auto"
             />
-           <Link href="/dashboard/admin/ask-availability">
+            <Link href="/dashboard/admin/ask-availability">
               <DashboardCard
-              variant="admin"
-              icon="/images/total-services.svg"
-              title="Availability request"
-              value={summary?.availabilityPending || ""}
-              color="bg-[#5473E8]"
-              width="w-[435px] 2xl:h-[100px] lg:h-auto"
-            />
-           </Link>
+                variant="admin"
+                icon="/images/total-services.svg"
+                title="Availability request"
+                value={summary?.availabilityPending || ""}
+                color="bg-[#5473E8]"
+                width="w-[435px] 2xl:h-[100px] lg:h-auto"
+              />
+            </Link>
           </div>
         </div>
 
@@ -106,7 +107,7 @@ export default function AdminDashboard() {
               </div>
             </div>
           </div>
-          <div className="bg-cyan text-white rounded-lg p-4 cursor-pointer hover:opacity-90 transition-opacity w-[290px] 2xl:h-[205px] lg:h-auto">
+          <Link href={"/dashboard/admin/new-request"} className="bg-cyan text-white rounded-lg p-4 cursor-pointer hover:opacity-90 transition-opacity w-[290px] 2xl:h-[205px] lg:h-auto">
             <div className="flex gap-8">
               <ImageComponent
                 src="/images/new-req.svg"
@@ -131,16 +132,26 @@ export default function AdminDashboard() {
               </div>
             </div>
             <div className="mt-2">
-              <Link href={""} className="text-sm font-semibold">
+              <span className="text-sm font-semibold">
                 View All
-              </Link>
+              </span>
             </div>
-          </div>
+          </Link>
         </div>
       </div>
 
       <AlertsTable value={""} onChange={() => {}} />
-      <EventsTable />
+      <div>
+        <div className="flex w-full justify-between items-center p-4 rounded-tl-xl rounded-tr-xl bg-[#F1F4FD] shadow mb-4">
+          <h1 className="text-xl text-gray-500 font-medium">Event</h1>
+          <div className="flex gap-4">
+            <Link href="/dashboard/admin/events/add-new-event">
+            <Button variant="default">Add new event</Button>
+            </Link>
+          </div>
+        </div>
+        <EventsTable />
+      </div>
     </div>
   );
 }

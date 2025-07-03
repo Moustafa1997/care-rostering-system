@@ -17,7 +17,7 @@ import {
 const Services = () => {
   return (
     <div className="w-full p-4 bg-slate-50">
-      <h1>Services</h1>
+      <h1 className="text-2xl font-semibold text-[#010101]">Services</h1>
       <div className="w-full flex flex-col justify-between items-center my-4 gap-4">
         <div className="flex justify-between items-center w-full gap-4">
           <div className="w-8/12 h-[208px] bg-white rounded-xl flex items-center justify-between px-2 pt-4">

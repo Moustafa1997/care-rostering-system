@@ -1,13 +1,13 @@
 import { useDebounce } from "@/hooks/general/useDebounce";
 import { useApi } from "@/hooks/general/useApi";
 import { useMemo } from "react";
-import { Staff, StaffFilters } from "@/types/staff";
+import { Staff, StaffFilters, StaffListView } from "@/types/staff";
 
 interface StaffApiResponse {
   status: string;
   message: string;
   data: {
-    staff: Staff[];
+    staff: StaffListView[];
     page: number;
     pages: number;
     total: number;

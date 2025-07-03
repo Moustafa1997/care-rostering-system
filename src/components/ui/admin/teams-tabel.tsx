@@ -1,16 +1,16 @@
 import Tabel from "@/components/ui/table";
 import CircularProgress from "@/components/ui/CircularProgress";
 import ActionDropdown from "../ActionDropdown";
-import { Staff } from "@/types/staff";
+import { Staff, StaffListView } from "@/types/staff";
 import TooltipWrapper from "./tooltip-wrapper";
 
 interface TeamsTableProps {
-  data: Staff[];
+  data: StaffListView[];
   loading?: boolean;
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
-  onDelete?: (data: Staff) => void;
+  onDelete?: (data: StaffListView) => void;
 }
 
 export default function TeamsTable({
@@ -24,9 +24,14 @@ export default function TeamsTable({
   const columns = [
     {
       header: "First Name",
-      accessor: "firstName"
+      accessor: "firstName",
+      render: (row: any) => <span className="capitalize">{row.firstName}</span>
     },
-    { header: "Last Name", accessor: "lastName" },
+    {
+      header: "Last Name",
+      accessor: "lastName",
+      render: (row: any) => <span className="capitalize">{row.lastName}</span>
+    },
     { header: "Phone ", accessor: "phone" },
     { header: "Role", accessor: "role" },
     {
@@ -90,7 +95,9 @@ export default function TeamsTable({
     {
       header: "Action",
       accessor: "action",
-      render: (row: Staff) => <ActionDropdown data={row} onDelete={onDelete} />
+      render: (row: StaffListView) => (
+        <ActionDropdown data={row} onDelete={onDelete} />
+      )
     }
   ];
 

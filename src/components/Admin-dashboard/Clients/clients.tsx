@@ -18,7 +18,7 @@ import {
 const Client = () => {
   return (
     <div className="w-full p-4 bg-slate-50">
-      <h1>Client</h1>
+      <h1 className="text-2xl font-semibold text-[#010101]">Client</h1>
       <div className="w-full flex flex-col justify-between items-center my-4 gap-4">
         <div className="flex justify-between items-center w-full gap-4">
           <div className="w-8/12 h-[208px] bg-white rounded-xl flex items-center justify-between px-2 pt-4">
@@ -32,7 +32,7 @@ const Client = () => {
             </div>
             <div className="pr-4">
               <p className="text-[#1E38A5] font-semibold text-base">
-                Total Client added
+                Total Clients
               </p>
               <h3 className="text-[#253BAA] font-semibold text-5xl">70</h3>
             </div>

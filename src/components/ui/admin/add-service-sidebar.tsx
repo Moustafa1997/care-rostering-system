@@ -8,7 +8,7 @@ import Link from "next/link";
 import { Dot } from "lucide-react";
 import { usePathname } from "next/navigation";
 
-const addServicesSidebar = () => {
+const AddServicesSidebar = () => {
   const pathname = usePathname();
 
   return (
@@ -81,4 +81,4 @@ const addServicesSidebar = () => {
   );
 };
 
-export default addServicesSidebar;
+export default AddServicesSidebar;

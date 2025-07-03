@@ -10,8 +10,8 @@ import {
 } from "@/components/ui/select";
 export default function ForeCasting() {
     const [enabled, setEnabled] = useState(true);
-  const StaffPayChart = dynamic(
-    () => import("../Finance/charts/StaffPayrollChart"),
+  const ForecastVsActualChart = dynamic(
+    () => import("../Finance/charts/ForecastVsActualChart"),
     { ssr: false }
   );
   return (
@@ -23,7 +23,8 @@ export default function ForeCasting() {
               Forecasting Overview
             </h2>
           </div>
-          <div className="col-span-4 mb-4">
+          <div className="flex justify-between w-full col-span-12 gap-8">
+          <div className="mb-4 w-full">
             <label className="text-sm font-medium text-[#41526A] mb-1">
               Select Year
             </label>
@@ -40,12 +41,12 @@ export default function ForeCasting() {
               </Select>
             </div>
           </div>
-          <div className="col-span-12 mb-4">
-           <div className="flex items-center gap-4">
+           <div className="mb-4 w-full">
+           <div className="flex items-center gap-4 mb-1">
              <span
               className={`${enabled ? "font-semibold text-sm" : "text-gray-500 text-sm"}`}
             >
-              Active
+              Service
             </span>
             <button
               onClick={() => setEnabled(!enabled)}
@@ -62,49 +63,13 @@ export default function ForeCasting() {
             <span
               className={`${!enabled ? "font-semibold text-sm" : "text-gray-500 text-sm"}`}
             >
-              Inactive
+              Staff
             </span>
            </div>
-          </div>
-          <div className="col-span-12">
-            <p className="text-lg font-medium text-black">
-              220 shifts were completed across 6 services
-            </p>
-            <p className="text-lg font-medium text-black">
-              20 shifts were covered by 6 staff members, working a total 200
-              hours
-            </p>
-            <p className="text-lg font-medium text-black">
-              Total service payroll cost was £ 2,048{" "}
-            </p>
-            <p className="text-lg font-medium text-black">
-              <strong>Jane Doe</strong> had the highest spend £ 2,048{" "}
-            </p>
-            <p className="text-lg font-medium text-black">
-              <strong>Jane Doe</strong> had the lowest spend £ 2,048{" "}
-            </p>
-            <div className="bg-[#192B7F] rounded-lg p-2 w-1/2 mt-4">
-              <p className="text-[#19F0FF] text-xs font-semibold">
-                Service Payroll increased by 11% compared to the previous 7 day
-                period.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div className="grid grid-cols-12 gap-4 border border-[#E1E1E1] rounded-2xl p-8 shadow">
-          <div className="col-span-12">
-            <h2 className="text-xl font-semibold text-gray-500 mb-0">
-              Payroll trend graph
-            </h2>
-          </div>
-          <div className="col-span-4 mb-4">
-            <label className="text-sm font-medium text-[#41526A] mb-1">
-              Select Year
-            </label>
             <div className="flex justify-center h-10 items-center border border-blue-soft bg-white gap-4 rounded-md">
               <Select>
                 <SelectTrigger className="border-none focus:ring-0">
-                  <SelectValue placeholder="2025" />
+                  <SelectValue placeholder="Select Service" />
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">Staff A</SelectItem>
@@ -114,8 +79,38 @@ export default function ForeCasting() {
               </Select>
             </div>
           </div>
+          </div>
           <div className="col-span-12">
-            <StaffPayChart />
+            <p className="text-lg font-medium text-black">
+              Forecast for 2025 shows an estimated total of 4,320 shifts across 6 services
+            </p>
+            <p className="text-lg font-medium text-black">
+             These shifts are expected to require approximately 68,000 working hours
+            </p>
+            <p className="text-lg font-medium text-black">
+              Projected total payroll for the year is £720,000
+            </p>
+            <p className="text-lg font-medium text-black">
+              Estimated overtime payroll is £48,000 based on existing rota patterns.
+            </p>
+            <div className="bg-[#192B7F] rounded-lg p-2 w-1/2 mt-4">
+              <p className="text-[#19F0FF] text-xs font-semibold">
+               Around 55 staff members will be required to cover this demand efficiently without excess overtime
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="grid grid-cols-12 gap-4 border border-[#E1E1E1] rounded-2xl p-8 shadow">
+          <div className="col-span-12">
+            <h2 className="text-xl font-semibold text-gray-500 mb-0">
+              Forecast vs Actual
+            </h2>
+          </div>
+          <div className="col-span-12 mt-4 mb-4">
+            <p className="text-base font-medium text-black">Total Payroll</p>
+          </div>
+          <div className="col-span-12">
+            <ForecastVsActualChart />
           </div>
         </div>
       </div>

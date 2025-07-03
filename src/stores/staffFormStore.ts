@@ -49,6 +49,13 @@ const validateUKPhoneNumber = (phoneNumber: string): boolean => {
   return false;
 };
 
+// Name Validation Function - Prevents numbers and special characters except spaces, hyphens, and apostrophes
+const validateName = (name: string): boolean => {
+  // Allow letters, spaces, hyphens, and apostrophes only
+  // This regex allows: letters (a-z, A-Z), spaces, hyphens, apostrophes, and accented characters
+  return /^[a-zA-ZÀ-ÿ\s\-']+$/.test(name.trim());
+};
+
 export interface StaffFormData {
   saveAsDraft: boolean;
   isAvailbilitySkipedByManager: boolean;
@@ -618,6 +625,8 @@ export const useStaffFormStore = create<StaffFormStore>()(
       },
 
       setCurrentStep: (step: number) => {
+        console.time("Store setCurrentStep operation");
+        console.time("Store state update");
         set((state) => ({
           currentStep: step,
           steps: state.steps.map((s, index) => ({
@@ -625,6 +634,8 @@ export const useStaffFormStore = create<StaffFormStore>()(
             isEnabled: s.isCompleted || index <= step
           }))
         }));
+        console.timeEnd("Store state update");
+        console.timeEnd("Store setCurrentStep operation");
       },
 
       updateStepStatus: (stepId: string, isCompleted: boolean) => {
@@ -660,10 +671,18 @@ export const useStaffFormStore = create<StaffFormStore>()(
             if (!firstName?.trim()) {
               newErrors.firstName = "First name is required";
               isValid = false;
+            } else if (!validateName(firstName)) {
+              newErrors.firstName =
+                "First name can only contain letters, spaces, hyphens, and apostrophes";
+              isValid = false;
             }
 
             if (!lastName?.trim()) {
               newErrors.lastName = "Last name is required";
+              isValid = false;
+            } else if (!validateName(lastName)) {
+              newErrors.lastName =
+                "Last name can only contain letters, spaces, hyphens, and apostrophes";
               isValid = false;
             }
 
@@ -714,6 +733,10 @@ export const useStaffFormStore = create<StaffFormStore>()(
             // Validate emergency contact
             if (!emergencyContact.fullName?.trim()) {
               newErrors["emergencyContact.fullName"] = "Full name is required";
+              isValid = false;
+            } else if (!validateName(emergencyContact.fullName)) {
+              newErrors["emergencyContact.fullName"] =
+                "Full name can only contain letters, spaces, hyphens, and apostrophes";
               isValid = false;
             }
 
@@ -1014,43 +1037,44 @@ export const useStaffFormStore = create<StaffFormStore>()(
               isValid = false;
             }
 
+            // Optional fields - only validate if they have values
             if (
-              paymentDetails.overtimePay === undefined ||
-              paymentDetails.overtimePay === null ||
+              paymentDetails.overtimePay !== undefined &&
+              paymentDetails.overtimePay !== null &&
               paymentDetails.overtimePay <= 0
             ) {
               newErrors["paymentDetails.overtimePay"] =
-                "Overtime pay is required and must be greater than 0";
+                "Overtime pay must be greater than 0 if provided";
               isValid = false;
             }
 
             if (
-              paymentDetails.holidayPay === undefined ||
-              paymentDetails.holidayPay === null ||
+              paymentDetails.holidayPay !== undefined &&
+              paymentDetails.holidayPay !== null &&
               paymentDetails.holidayPay <= 0
             ) {
               newErrors["paymentDetails.holidayPay"] =
-                "Holiday pay is required and must be greater than 0";
+                "Holiday pay must be greater than 0 if provided";
               isValid = false;
             }
 
             if (
-              paymentDetails.paternityPay === undefined ||
-              paymentDetails.paternityPay === null ||
+              paymentDetails.paternityPay !== undefined &&
+              paymentDetails.paternityPay !== null &&
               paymentDetails.paternityPay <= 0
             ) {
               newErrors["paymentDetails.paternityPay"] =
-                "Paternity pay is required and must be greater than 0";
+                "Paternity pay must be greater than 0 if provided";
               isValid = false;
             }
 
             if (
-              paymentDetails.maternityPay === undefined ||
-              paymentDetails.maternityPay === null ||
+              paymentDetails.maternityPay !== undefined &&
+              paymentDetails.maternityPay !== null &&
               paymentDetails.maternityPay <= 0
             ) {
               newErrors["paymentDetails.maternityPay"] =
-                "Maternity pay is required and must be greater than 0";
+                "Maternity pay must be greater than 0 if provided";
               isValid = false;
             }
             break;
@@ -1752,19 +1776,25 @@ export const useStaffFormStore = create<StaffFormStore>()(
 
       // New improved function to initialize form from Staff data
       initializeFormFromStaff: (staff: Staff, mode: "edit" | "view") => {
+        console.time("Store initializeFormFromStaff");
         console.log("Initializing form from staff data:", staff);
 
         // Convert Staff to StaffFormData
+        console.time("Convert staff to form data");
         const staffFormData = convertStaffToFormData(staff);
+        console.timeEnd("Convert staff to form data");
 
         // Create steps based on sectionProgress
+        console.time("Create steps from progress");
         const updatedSteps = createStepsFromProgress(staff.sectionProgress);
+        console.timeEnd("Create steps from progress");
 
         // Set availability flag based on existing availability
         const sendAvilability = !(
           staff.availability && staff.availability.length > 0
         );
 
+        console.time("Store initialization state update");
         set({
           formData: staffFormData,
           currentStep: 0,
@@ -1777,6 +1807,8 @@ export const useStaffFormStore = create<StaffFormStore>()(
           progress: staff.progress,
           active: staff.active
         });
+        console.timeEnd("Store initialization state update");
+        console.timeEnd("Store initializeFormFromStaff");
       },
 
       resetForm: () => {

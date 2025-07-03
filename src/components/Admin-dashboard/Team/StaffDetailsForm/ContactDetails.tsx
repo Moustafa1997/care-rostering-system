@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import ImageComponent from "@/components/ImageComponent/ImageComponent";
 import ViewContactDetails from "@/components/ui/admin/view-contact-details";
 import {
@@ -21,7 +20,6 @@ export default function ContactDetails() {
     errors,
     validateStep,
     formMode,
-    staffId,
     steps,
     switchToEditMode
   } = useStaffFormStore();
@@ -77,11 +75,6 @@ export default function ContactDetails() {
     setMainAddressMode(mode);
     setField("contactDetails", "addressDetails.isManual", mode === "manual");
 
-    console.log("Main address mode changed:", {
-      mode,
-      isManual: mode === "manual"
-    });
-
     // If switching to manual mode and there's an existing address, parse it
     if (mode === "manual" && contactDetails.addressDetails.address) {
       const addressParts = contactDetails.addressDetails.address.split(", ");
@@ -103,11 +96,6 @@ export default function ContactDetails() {
       "emergencyContact.addressDetails.isManual",
       mode === "manual"
     );
-
-    console.log("Emergency address mode changed:", {
-      mode,
-      isManual: mode === "manual"
-    });
 
     // If switching to manual mode and there's an existing address, parse it
     if (
@@ -196,39 +184,18 @@ export default function ContactDetails() {
     // Ensure isManual flag is set to true for manual entry
     setField(section, isManualPath, true);
 
-    console.log(`Manual address change for ${addressType}:`, {
-      field,
-      value,
-      combinedAddress,
-      postcode: updatedAddressData.postcode,
-      isManual: true
-    });
-
     validateStep("contact-details");
   };
 
   // Effect to set coordinates when they become available
   useEffect(() => {
-    console.log("mainCoordinates out", mainCoordinates);
-    console.log("mainAddressMode", mainAddressMode);
-    console.log("mainManualAddress.postcode", mainManualAddress.postcode);
-
     if (mainCoordinates && mainAddressMode === "manual") {
-      console.log("mainCoordinates", mainCoordinates);
       setField("contactDetails", "addressDetails.location", mainCoordinates);
     }
   }, [mainCoordinates, mainAddressMode, setField]);
 
   useEffect(() => {
-    console.log("emergencyCoordinates out", emergencyCoordinates);
-    console.log("emergencyAddressMode", emergencyAddressMode);
-    console.log(
-      "emergencyManualAddress.postcode",
-      emergencyManualAddress.postcode
-    );
-
     if (emergencyCoordinates && emergencyAddressMode === "manual") {
-      console.log("emergencyCoordinates", emergencyCoordinates);
       setField(
         "contactDetails",
         "emergencyContact.addressDetails.location",
@@ -402,12 +369,6 @@ export default function ContactDetails() {
                     <Select
                       value={contactDetails.addressDetails.address}
                       onValueChange={(value) => {
-                        console.log("Selected value:", value);
-                        console.log("Available addresses:", mainAddresses);
-                        const selectedAddress = mainAddresses.find(
-                          (addr) => addr.address === value
-                        );
-                        console.log("Selected address:", selectedAddress);
                         handleFieldChange(
                           "contactDetails",
                           "addressDetails.address",
@@ -416,7 +377,8 @@ export default function ContactDetails() {
                         handleFieldChange(
                           "contactDetails",
                           "addressDetails.location",
-                          selectedAddress?.location
+                          mainAddresses.find((addr) => addr.address === value)
+                            ?.location
                         );
                         // Set isManual to false when selecting from postal code search
                         setField(
@@ -867,15 +829,6 @@ export default function ContactDetails() {
                           contactDetails.emergencyContact.addressDetails.address
                         }
                         onValueChange={(value) => {
-                          console.log("Selected value:", value);
-                          console.log(
-                            "Available addresses:",
-                            emergencyAddresses
-                          );
-                          const selectedAddress = emergencyAddresses.find(
-                            (addr) => addr.address === value
-                          );
-                          console.log("Selected address:", selectedAddress);
                           handleFieldChange(
                             "contactDetails",
                             "emergencyContact.addressDetails.address",
@@ -884,7 +837,9 @@ export default function ContactDetails() {
                           handleFieldChange(
                             "contactDetails",
                             "emergencyContact.addressDetails.location",
-                            selectedAddress?.location
+                            emergencyAddresses.find(
+                              (addr) => addr.address === value
+                            )?.location
                           );
                           // Set isManual to false when selecting from postal code search
                           setField(

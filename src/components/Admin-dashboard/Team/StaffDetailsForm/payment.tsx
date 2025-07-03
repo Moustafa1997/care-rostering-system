@@ -39,7 +39,7 @@ export default function Payment() {
           <div className="2xl:col-span-6 lg:col-span-12">
             <div className="w-full mb-4">
               <label className="block text-sm font-normal text-[#2F3E53] mb-1">
-                Regular pay rate/pm <span className="text-red-500">*</span>
+                Regular pay rate/pm <span className="text-red">*</span>
               </label>
               <div
                 className={`flex items-center border rounded-md bg-white pl-2 ${getFieldError("regularPay") ? "border-red" : "border-blue-soft"}`}
@@ -67,7 +67,7 @@ export default function Payment() {
 
             <div className="w-full mb-4">
               <label className="block text-sm font-normal text-[#2F3E53] mb-1">
-                Overtime pay rate p/m <span className="text-red-500">*</span>
+                Overtime pay rate p/m
               </label>
               <div
                 className={`flex items-center border rounded-md bg-white pl-2 ${getFieldError("overtimePay") ? "border-red" : "border-blue-soft"}`}
@@ -95,7 +95,7 @@ export default function Payment() {
 
             <div className="w-full mb-4">
               <label className="block text-sm font-normal text-[#2F3E53] mb-1">
-                Holiday pay rate/pm <span className="text-red-500">*</span>
+                Holiday pay rate/pm
               </label>
               <div
                 className={`flex items-center border rounded-md bg-white pl-2 ${getFieldError("holidayPay") ? "border-red" : "border-blue-soft"}`}
@@ -125,7 +125,7 @@ export default function Payment() {
           <div className="2xl:col-span-6 lg:col-span-12">
             <div className="w-full mb-4">
               <label className="block text-sm font-normal text-[#2F3E53] mb-1">
-                Paternity pay <span className="text-red-500">*</span>
+                Paternity pay
               </label>
               <div
                 className={`flex items-center border rounded-md bg-white pl-2 ${getFieldError("paternityPay") ? "border-red" : "border-blue-soft"}`}
@@ -156,7 +156,7 @@ export default function Payment() {
 
             <div className="w-full mb-4">
               <label className="block text-sm font-normal text-[#2F3E53] mb-1">
-                Maternity pay <span className="text-red-500">*</span>
+                Maternity pay
               </label>
               <div
                 className={`flex items-center border rounded-md bg-white pl-2 ${getFieldError("maternityPay") ? "border-red" : "border-blue-soft"}`}

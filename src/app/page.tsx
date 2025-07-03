@@ -1,5 +1,11 @@
-import { redirect } from "next/navigation";
+import React from "react";
 
-export default function HomePage() {
-  redirect("/login/manager");
-}
+const page = () => {
+  return (
+    <React.Fragment>
+      {/* <Team /> */}
+    </React.Fragment>
+  );
+};
+
+export default page;

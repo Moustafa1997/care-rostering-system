@@ -1,4 +1,5 @@
 import React from "react";
+import { useAuthStore } from "@/stores/useAuthStore";
 import { Button } from "@/components/ui/button";
 import ImageComponent from "@/components/ImageComponent/ImageComponent";
 import { EllipsisVertical, Plus } from "lucide-react";

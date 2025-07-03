@@ -1,9 +1,21 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { useStaffFormStore } from "@/stores/staffFormStore";
 import { Check } from "lucide-react";
 
 export default function FormProgress() {
+  console.time("FormProgress component render");
+
+  // Track rerenders
+  const renderCount = useRef(0);
+  renderCount.current += 1;
+
+  useEffect(() => {
+    console.log(`🔄 FormProgress rerendered ${renderCount.current} times`);
+  });
+
   const { steps, currentStep } = useStaffFormStore();
+
+  console.timeEnd("FormProgress component render");
 
   return (
     <div className="w-full py-4">

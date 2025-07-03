@@ -117,7 +117,7 @@ export default function Availability() {
       <div className="p-6 space-y-8 bg-white rounded-2xl">
         <div className="flex justify-between items-center">
           <h2 className="text-xl font-semibold text-gray-500 mb-0">
-            Staff's Availability detail
+            Staff&apos;s Availability detail
           </h2>
           {formData.isAvailbilitySkipedByManager && (
             <span className="text-sm text-gray-500 italic">
@@ -126,88 +126,75 @@ export default function Availability() {
           )}
         </div>
 
-        {!formData.isAvailbilitySkipedByManager && (
-          <div
-            className={`grid grid-cols-12 gap-4 border border-[#E1E1E1] rounded-2xl p-8 shadow ${isEditingDisabled ? "opacity-60" : ""}`}
-          >
-            <div className="2xl:col-span-8 lg:col-span-12 w-full">
-              <label className="block text-sm font-semibold text-[#293444] mb-3">
-                Days availability
-              </label>
-              <div className="flex 2xl:flex-nowrap lg:flex-wrap gap-2">
-                {days.map((day) => (
-                  <Button
-                    key={day}
-                    variant={selectedDays[day] ? "default" : "icons"}
-                    className={`h-[34px] ${
-                      selectedDays[day] ? "bg-blue-900 text-white" : ""
-                    } ${isEditingDisabled ? "cursor-not-allowed" : ""}`}
-                    onClick={() => handleDayClick(day)}
-                    disabled={isEditingDisabled}
-                    title={
-                      isEditingDisabled
-                        ? "Manager has disabled editing of availability"
-                        : ""
-                    }
-                  >
-                    {day}
-                  </Button>
-                ))}
-              </div>
-            </div>
+        {isEditingDisabled && (
+          <div className="text-red text-sm font-medium text-center py-2">
+            You cannot edit the availability
+          </div>
+        )}
 
-            <div className="2xl:col-span-4 lg:col-span-12">
-              <label className="block text-sm font-semibold text-[#293444] mb-3">
-                Time availability
-              </label>
-              {Object.entries(selectedDays).map(([day, shifts]) => (
-                <div key={day} className="flex items-center gap-3 mb-4">
-                  <span className="text-sm font-medium min-w-[40px]">
-                    {day}:
-                  </span>
-                  <div className="flex flex-col gap-2">
-                    <div className="flex items-center gap-2">
-                      <input
-                        type="checkbox"
-                        id={`${day}-morning`}
-                        checked={shifts.has("Morning")}
-                        onChange={() => handleShiftChange(day, "Morning")}
-                        className="w-4 h-4 text-blue-900 rounded"
-                        disabled={isEditingDisabled}
-                        title={
-                          isEditingDisabled
-                            ? "Manager has disabled editing of availability"
-                            : ""
-                        }
-                      />
-                      <label htmlFor={`${day}-morning`} className="text-sm">
-                        Morning
-                      </label>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <input
-                        type="checkbox"
-                        id={`${day}-night`}
-                        checked={shifts.has("Night")}
-                        onChange={() => handleShiftChange(day, "Night")}
-                        className="w-4 h-4 text-blue-900 rounded"
-                        disabled={isEditingDisabled}
-                        title={
-                          isEditingDisabled
-                            ? "Manager has disabled editing of availability"
-                            : ""
-                        }
-                      />
-                      <label htmlFor={`${day}-night`} className="text-sm">
-                        Night
-                      </label>
-                    </div>
-                  </div>
-                </div>
+        <div
+          className={`grid grid-cols-12 gap-4 border border-[#E1E1E1] rounded-2xl p-8 shadow ${isEditingDisabled ? "opacity-60" : ""}`}
+        >
+          <div className="2xl:col-span-8 lg:col-span-12 w-full">
+            <label className="block text-sm font-semibold text-[#293444] mb-3">
+              Days availability
+            </label>
+            <div className="flex 2xl:flex-nowrap lg:flex-wrap gap-2">
+              {days.map((day) => (
+                <Button
+                  key={day}
+                  variant={selectedDays[day] ? "default" : "icons"}
+                  className={`h-[34px] ${
+                    selectedDays[day] ? "bg-blue-900 text-white" : ""
+                  } ${isEditingDisabled ? "cursor-not-allowed" : ""}`}
+                  onClick={() => handleDayClick(day)}
+                  disabled={isEditingDisabled}
+                >
+                  {day}
+                </Button>
               ))}
             </div>
           </div>
-        )}
+
+          <div className="2xl:col-span-4 lg:col-span-12">
+            <label className="block text-sm font-semibold text-[#293444] mb-3">
+              Time availability
+            </label>
+            {Object.entries(selectedDays).map(([day, shifts]) => (
+              <div key={day} className="flex items-center gap-3 mb-4">
+                <span className="text-sm font-medium min-w-[40px]">{day}:</span>
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      id={`${day}-morning`}
+                      checked={shifts.has("Morning")}
+                      onChange={() => handleShiftChange(day, "Morning")}
+                      className="w-4 h-4 text-blue-900 rounded"
+                      disabled={isEditingDisabled}
+                    />
+                    <label htmlFor={`${day}-morning`} className="text-sm">
+                      Morning
+                    </label>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      id={`${day}-night`}
+                      checked={shifts.has("Night")}
+                      onChange={() => handleShiftChange(day, "Night")}
+                      className="w-4 h-4 text-blue-900 rounded"
+                      disabled={isEditingDisabled}
+                    />
+                    <label htmlFor={`${day}-night`} className="text-sm">
+                      Night
+                    </label>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
 
         <div className="flex justify-center">
           <Button
@@ -215,11 +202,6 @@ export default function Availability() {
             className="w-40"
             onClick={handleSkipAvailability}
             disabled={isEditingDisabled}
-            title={
-              isEditingDisabled
-                ? "Manager has disabled editing of availability"
-                : ""
-            }
           >
             {formData.isAvailbilitySkipedByManager
               ? "Add Availability"

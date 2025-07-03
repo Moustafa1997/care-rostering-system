@@ -134,3 +134,20 @@ export interface StaffFilters {
   availabilityStatus?: string;
   onboardingStatus?: string;
 }
+
+export interface StaffListView {
+  _id: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  role: string;
+  photo: string;
+  saveAsDraft: boolean;
+  status: string;
+  progress: number;
+  managerCanEditAvailability: boolean;
+  managerCanEditStatus: boolean;
+  groupCount: number;
+  availabilityStatus: string;
+  onboardedByManager: boolean;
+}

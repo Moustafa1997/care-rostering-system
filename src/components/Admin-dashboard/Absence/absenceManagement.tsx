@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Search, Plus, Bell } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -142,11 +142,15 @@ const Absence = () => {
         </div>
       </div>
 
-      {viewMode === "list" ? <AbsenceTable /> :  <div className="bg-[#F1F1F1] rounded-3xl p-8 mt-8">
-        <FullCalendar plugins={[dayGridPlugin]} initialView="dayGridMonth" />
-        </div>}
+      {viewMode === "list" ? (
+        <AbsenceTable />
+      ) : (
+        <div className="bg-[#F1F1F1] rounded-3xl p-8 mt-8">
+          <FullCalendar plugins={[dayGridPlugin]} initialView="dayGridMonth" />
+        </div>
+      )}
 
-        <AddAbsenceModal isOpen={showModal} onClose={() => setShowModal(false)} />
+      <AddAbsenceModal isOpen={showModal} onClose={() => setShowModal(false)} />
     </div>
   );
 };

@@ -1,13 +1,13 @@
 import CardView from "./card-view-tabel";
-import { Staff } from "@/types/staff";
+import { StaffListView } from "@/types/staff";
 
 interface TeamsCardViewProps {
-  data: Staff[];
+  data: StaffListView[];
   loading?: boolean;
   currentPage: number;
   totalPages: number;
   onPageChange: (page: number) => void;
-  onDelete?: (data: Staff) => void;
+  onDelete?: (data: StaffListView) => void;
 }
 
 export default function TeamsCardView({

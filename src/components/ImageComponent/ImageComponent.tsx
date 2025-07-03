@@ -21,7 +21,7 @@ const ImageComponent = ({
       width={width}
       height={height}
       className={className}
-      style={{ objectFit: "cover" }}
+      objectFit="true"
     />
   );
 };

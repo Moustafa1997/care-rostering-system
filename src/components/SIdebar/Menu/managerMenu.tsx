@@ -13,7 +13,7 @@ import { Settings } from "lucide-react";
 import { Users } from "lucide-react";
 import { usePathname } from "next/navigation";
 
-const managerMenu = () => {
+const ManagerMenu = () => {
   const pathname = usePathname();
 
   return (
@@ -82,4 +82,4 @@ const managerMenu = () => {
   );
 };
 
-export default managerMenu;
+export default ManagerMenu;

@@ -175,11 +175,28 @@ export default function ClientPersonalDetails() {
                 />
               </div>
             </div>
-            <div className="col-span-12 w-60">
+            <div className="col-span-6">
               <label className="block text-sm font-normal text-[#2F3E53] mb-1">
                 Date of admission
               </label>
               <DatePickerForm value={""} onChange={() => {}} />
+            </div>
+               <div className="col-span-6">
+              <label className="block text-sm font-normal text-[#2F3E53] mb-1">
+                 Care type
+              </label>
+               <div className="w-full border border-blue-soft bg-white rounded-md">
+                    <Select>
+                      <SelectTrigger className="w-full !px-3 h-10 border-none focus:ring-0">
+                        <SelectValue placeholder="Select" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="all">supported living</SelectItem>
+                        <SelectItem value="Active">domiciliary care</SelectItem>
+                        <SelectItem value="Active">residential care</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
             </div>
           </div>
         </section>

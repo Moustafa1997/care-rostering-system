@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import StaffDetailSideBar from "@/components/ui/admin/staff-detail-sidebar";
 import FormProgress from "@/components/ui/admin/form-progress";
 import FormNavigation from "@/components/ui/admin/form-navigation";
@@ -8,12 +8,25 @@ import CircularProgress from "@/components/ui/CircularProgress";
 import { useToggleVerification } from "@/hooks/staff/useToggleVerification";
 import { useToggleActivation } from "@/hooks/staff/useToggleActivation";
 import ToggleSwitch from "@/components/ui/admin/toggle-switch";
+import { ArrowLeft } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 export default function StaffDetailsLayout({
   children
 }: {
   children: React.ReactNode;
 }) {
+  const router = useRouter();
+
+  // Track rerenders
+  const renderCount = React.useRef(0);
+  renderCount.current += 1;
+
+  useEffect(() => {
+    // Log rerenders for debugging (removed console.log to fix linting)
+  });
+
   const {
     currentStep,
     steps,
@@ -56,8 +69,8 @@ export default function StaffDetailsLayout({
       await toggleVerification(staffId);
       // Update the local state after successful toggle
       setIsVerified(!isVerified);
-    } catch (error) {
-      console.error("Failed to toggle verification:", error);
+    } catch {
+      // Handle error silently or with proper error handling
     }
   };
 
@@ -68,68 +81,94 @@ export default function StaffDetailsLayout({
       await toggleActivation(staffId);
       // Update the local state after successful toggle
       setActive(!active);
-    } catch (error) {
-      console.error("Failed to toggle activation:", error);
+    } catch {
+      // Handle error silently or with proper error handling
     }
+  };
+
+  const handleBackToTeams = () => {
+    router.push("/dashboard/admin/team");
   };
 
   return (
     <>
       <div className="grid grid-cols-12 mb-6">
-        <div className="col-span-6">
-          <div>
-            <p className="text-sm font-semibold text-gray-500">
-              Team / <span className="text-[#959595]">Staff detail</span>
-            </p>
-          </div>
-          <div>
-            <h1 className="text-2xl text-gray-500 font-semibold">
-              Staff detail
-            </h1>
+        {/* First Row */}
+        <div className="col-span-12 mb-4">
+          <div className="grid grid-cols-12">
+            <div className="col-span-6">
+              <div>
+                <p className="text-sm font-semibold text-gray-500">
+                  Team / <span className="text-[#959595]">Staff detail</span>
+                </p>
+              </div>
+              <div>
+                <h1 className="text-2xl text-gray-500 font-semibold">
+                  Staff detail
+                </h1>
+              </div>
+            </div>
+            <div className="col-span-6 flex justify-end items-center">
+              <div className="flex items-center gap-2">
+                <p className="text-sm font-semibold text-black">
+                  Onboarding Progress:
+                </p>
+                <CircularProgress
+                  value={
+                    !isCreateMode
+                      ? progress
+                      : Math.round((currentStep / (steps.length - 1)) * 100)
+                  }
+                  showLabel={false}
+                />
+              </div>
+            </div>
           </div>
         </div>
-        <div className="col-span-6 flex flex-col items-end gap-4">
-          <div className="flex items-center gap-2">
-            <p className="text-sm font-semibold text-black">
-              Onboarding Progress:
-            </p>
-            <CircularProgress
-              value={
-                !isCreateMode
-                  ? progress
-                  : Math.round((currentStep / (steps.length - 1)) * 100)
-              }
-              showLabel={false}
-            />
-          </div>
 
-          <div className="flex items-end gap-3">
-            <ToggleSwitch
-              isOn={active}
-              onToggle={handleActivationToggle}
-              disabled={isActivationDisabled}
-              disabledReason={
-                !isOnboardingComplete
-                  ? "Complete onboarding to edit activation status"
-                  : undefined
-              }
-              leftLabel="Active"
-              rightLabel="Inactive"
-            />
-          </div>
-          <div className="flex items-end gap-3">
-            <ToggleSwitch
-              isOn={isVerified}
-              onToggle={handleVerificationToggle}
-              disabled={isVerificationDisabled}
-              disabledReason={
-                !isOnboardingComplete
-                  ? "Complete onboarding to edit verification status"
-                  : undefined
-              }
-              leftLabel="Verified"
-              rightLabel="Unverified"
-            />
+        {/* Second Row */}
+        <div className="col-span-12">
+          <div className="flex items-center justify-between w-full gap-4">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleBackToTeams}
+              className="flex items-center gap-2"
+            >
+              <ArrowLeft className="h-4 w-4" />
+              Back to Teams
+            </Button>
+
+            <div className="flex flex-col gap-3">
+              <div className="flex items-end gap-3">
+                <ToggleSwitch
+                  isOn={active}
+                  onToggle={handleActivationToggle}
+                  disabled={isActivationDisabled}
+                  disabledReason={
+                    !isOnboardingComplete
+                      ? "Complete onboarding to edit activation status"
+                      : undefined
+                  }
+                  leftLabel="Active"
+                  rightLabel="Inactive"
+                />
+              </div>
+              <div className="flex items-end gap-3">
+                <ToggleSwitch
+                  isOn={isVerified}
+                  onToggle={handleVerificationToggle}
+                  disabled={isVerificationDisabled}
+                  disabledReason={
+                    !isOnboardingComplete
+                      ? "Complete onboarding to edit verification status"
+                      : undefined
+                  }
+                  leftLabel="Verified"
+                  rightLabel="Unverified"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>

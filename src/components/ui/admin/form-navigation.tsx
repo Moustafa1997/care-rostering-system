@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { useStaffFormStore, StaffFormData } from "@/stores/staffFormStore";
@@ -7,6 +7,16 @@ import { useCreateStaff } from "@/hooks/staff/useCreateStaff";
 import { useEditStaff } from "@/hooks/staff/useEditStaff";
 
 export default function FormNavigation() {
+  console.time("FormNavigation component render");
+
+  // Track rerenders
+  const renderCount = useRef(0);
+  renderCount.current += 1;
+
+  useEffect(() => {
+    console.log(`🔄 FormNavigation rerendered ${renderCount.current} times`);
+  });
+
   const router = useRouter();
   const { createStaff, isPending: isCreatePending } = useCreateStaff();
   const {
@@ -19,13 +29,30 @@ export default function FormNavigation() {
     updateStepStatus,
     resetForm,
     formMode,
-    staffId
+    staffId,
+    formData
   } = useStaffFormStore();
 
   const { editStaff, isPending: isEditPending } = useEditStaff(staffId || "");
 
+  // Add bounds checking to ensure currentStep is valid
+  const isValidStep = currentStep >= 0 && currentStep < steps.length;
+  const currentStepData = isValidStep ? steps[currentStep] : null;
+
   const handleNext = async () => {
-    const currentStepId = steps[currentStep].id;
+    // Check if current step is valid
+    if (!isValidStep || !currentStepData) {
+      console.error(
+        "Invalid current step:",
+        currentStep,
+        "Steps length:",
+        steps.length
+      );
+      toast.error("Invalid form state. Please refresh the page.");
+      return;
+    }
+
+    const currentStepId = currentStepData.id;
     const isValid = validateStep(currentStepId);
 
     if (!isValid) {
@@ -36,7 +63,7 @@ export default function FormNavigation() {
     // Update current step status
     updateStepStatus(currentStepId, true);
 
-    if (currentStep === steps.length - 1) {
+    if (currentStep === steps.length - 1 && formMode !== "view") {
       // Submit form on last step
       try {
         if (formMode === "edit" || formMode === "edit-draft") {
@@ -61,6 +88,18 @@ export default function FormNavigation() {
       // Move to next step
       const nextStep = currentStep + 1;
 
+      // Check if next step is valid
+      if (nextStep >= steps.length) {
+        console.error(
+          "Next step out of bounds:",
+          nextStep,
+          "Steps length:",
+          steps.length
+        );
+        toast.error("Invalid form state. Please refresh the page.");
+        return;
+      }
+
       // Enable the next step
       const updatedSteps = steps.map((step, index) => ({
         ...step,
@@ -82,7 +121,19 @@ export default function FormNavigation() {
 
   const handleSaveDraft = async () => {
     try {
-      const currentStepId = steps[currentStep].id;
+      // Check if current step is valid
+      if (!isValidStep || !currentStepData) {
+        console.error(
+          "Invalid current step:",
+          currentStep,
+          "Steps length:",
+          steps.length
+        );
+        toast.error("Invalid form state. Please refresh the page.");
+        return;
+      }
+
+      const currentStepId = currentStepData.id;
       const isValid = validateStep(currentStepId);
 
       if (!isValid) {
@@ -121,6 +172,17 @@ export default function FormNavigation() {
 
   const isPending = isCreatePending || isEditPending;
 
+  console.timeEnd("FormNavigation component render");
+
+  // Don't render if current step is invalid
+  if (!isValidStep || !currentStepData) {
+    console.error("FormNavigation: Invalid step state", {
+      currentStep,
+      stepsLength: steps.length
+    });
+    return null;
+  }
+
   return (
     <div className="mt-8 flex justify-between items-center">
       <div className="flex gap-4">
@@ -131,24 +193,29 @@ export default function FormNavigation() {
         >
           Back
         </Button>
-        {formMode !== "view" && (
-          <Button
-            variant="outline"
-            onClick={handleSaveDraft}
-            disabled={isPending}
-          >
-            Save as Draft
-          </Button>
-        )}
+        {formMode !== "view" &&
+          (formMode === "create" || formData.saveAsDraft) && (
+            <Button
+              variant="outline"
+              onClick={handleSaveDraft}
+              disabled={
+                isPending || (formMode !== "create" && !formData.saveAsDraft)
+              }
+            >
+              Save as Draft
+            </Button>
+          )}
       </div>
 
-      <Button
-        variant="default"
-        onClick={handleNext}
-        disabled={!steps[currentStep].isEnabled || isPending}
-      >
-        {currentStep === steps.length - 1 ? "Submit" : "Next"}
-      </Button>
+      {formMode !== "view" && (
+        <Button
+          variant="default"
+          onClick={handleNext}
+          disabled={!currentStepData.isEnabled || isPending}
+        >
+          {currentStep === steps.length - 1 ? "Submit" : "Next"}
+        </Button>
+      )}
     </div>
   );
 }

@@ -124,23 +124,26 @@ export function useApi<
   | UseMutationResult<TData, TError, TVariables> {
   const { method = "GET", queryOptions, mutationOptions } = options;
 
-  if (method === "GET") {
-    return useQuery<TData, TError>({
-      queryKey: [endpoint],
-      queryFn: () => fetchWithAuth<TData>(endpoint),
-      ...queryOptions
-    });
-  }
+  // Always call both hooks to avoid conditional hook calls
+  const queryResult = useQuery<TData, TError>({
+    queryKey: [endpoint],
+    queryFn: () => fetchWithAuth<TData>(endpoint),
+    enabled: method === "GET",
+    ...queryOptions
+  });
 
-  return useMutation<TData, TError, TVariables>({
+  const mutationResult = useMutation<TData, TError, TVariables>({
     mutationFn: (data) =>
       fetchWithAuth<TData>(endpoint, {
         method,
         headers: {
           "Content-Type": "application/json"
         },
-        body: JSON.stringify(data)
+        ...(method !== "DELETE" && { body: JSON.stringify(data) })
       }),
     ...mutationOptions
   });
+
+  // Return the appropriate hook result based on method
+  return method === "GET" ? queryResult : mutationResult;
 }

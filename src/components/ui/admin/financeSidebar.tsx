@@ -63,7 +63,7 @@ const FinanceSidebar = () => {
               <span className="px-2 py-5 font-medium">Forecasting</span>
             </Link>
           </NavigationMenuItem>
-          <NavigationMenuItem className="w-full group !ml-0">
+          {/* <NavigationMenuItem className="w-full group !ml-0">
             <Link
               href="/dashboard/admin/finance"
               className={`w-full flex flex-row justify-start items-center gap-0 
@@ -74,12 +74,12 @@ const FinanceSidebar = () => {
               </div>
               <span className="px-2 py-5 font-medium">Overtime</span>
             </Link>
-          </NavigationMenuItem>
+          </NavigationMenuItem> */}
             <NavigationMenuItem className="w-full group !ml-0">
             <Link
-              href="/dashboard/admin/finance"
+              href="/dashboard/admin/finance/comparison"
               className={`w-full flex flex-row justify-start items-center gap-0 
-                ${pathname === "/dashboard/admin/finance" ? " bg-cyan text-white" : "group-hover:text-white group-hover:bg-cyan group-hover:font-bold group-hover:text-sm"}`}
+                ${pathname === "/dashboard/admin/finance/comparison" ? " bg-cyan text-white" : "group-hover:text-white group-hover:bg-cyan group-hover:font-bold group-hover:text-sm"}`}
             >
               <div className="p-5 bg-transparent group-hover:bg-cyan">
                 <Dot size={25} />

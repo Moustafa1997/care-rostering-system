@@ -3,7 +3,6 @@ import { useEditContractor } from "@/hooks/contractors/useEditContractor";
 import { useContractor } from "@/hooks/contractors/useContractor";
 import { useRouter } from "next/navigation";
 import EditContractorForm from "@/components/ui/manager-contractor/edit-contractor-form";
-import { Contractor } from "@/types/contractor";
 import { useToast } from "@/hooks/use-toast";
 import { ContractorFormData } from "@/hooks/contractors/useRegisterContractor";
 
